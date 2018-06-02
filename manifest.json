@@ -1,0 +1,35 @@
+{
+    "short_name": "Restaurants",
+    "name": "Restaurants reviews",
+    "display": "standalone",
+    "start_url": "index.html",
+    "theme_color": "black",
+    "icons": [
+        {
+            "src": "icons/icon-48x48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "icons/icon-64x64.png",
+            "type": "image/png",
+            "sizes": "64x64"
+        },
+        {
+            "src": "icons/icon-128x128.png",
+            "type": "image/png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "icons/icon-256x256.png",
+            "type": "image/png",
+            "sizes": "256x256"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "background_color": "#052a48"
+}

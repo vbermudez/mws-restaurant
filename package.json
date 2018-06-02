@@ -1,0 +1,35 @@
+{
+  "name": "mws-restaurant",
+  "version": "1.0.0",
+  "description": "Udacity's Mobile Web Specialist Nanodegree project \"Restaurant Review\" ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbermudez/mws-restaurant-stage-1.git"
+  },
+  "keywords": [
+    "Udacity",
+    "Mobile",
+    "Web",
+    "Specialist",
+    "Nanodegree",
+    "Google",
+    "Restaurant",
+    "Review",
+    "Project"
+  ],
+  "author": "vbermudez@xi-tek.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vbermudez/mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/vbermudez/mws-restaurant-stage-1#readme",
+  "dependencies": {
+    "finalhandler": "^1.1.1",
+    "h5bp": "^0.1.4",
+    "serve-static": "^1.13.2"
+  }
+}
