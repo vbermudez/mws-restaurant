@@ -1,16 +1,22 @@
 'use strict';
 
-const h5bp = require('h5bp');
-const app = h5bp.createServer({ root: __dirname + '/public' });
+const express = require('express');
+const compression  = require('compression');
+const port = 8080;
+const app = express();
 
-app.listen(8080);
+app.set('port', (process.env.PORT || port));
+app.use(compression());
+app.use(express.static(__dirname + '/public'));
+
+app.listen(app.get('port'), _ => console.log(`Server listening on: http://localhost:${app.get('port')}`) );
 
 // const http = require('http');
 // const https = require('https');
 // const finalhandler = require('finalhandler');
 // const serveStatic = require('serve-static');
 // const fs = require('fs');
-// const serve = serveStatic('./');
+// const serve = serveStatic('./public');
 // const options = {
 //     key: fs.readFileSync('server.key'),
 //     cert: fs.readFileSync('server.crt')

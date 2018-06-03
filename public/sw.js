@@ -12,11 +12,11 @@ var filesToCache = [
 self.addEventListener('install', function (e) {
     for (let i = 1; i < 11; ++i) {
         filesToCache.push(`/restaurant.html?id=${i}`);
-        filesToCache.push(`/img/${i}.jpg`);
-        filesToCache.push(`/img/${i}-380_1x.jpg`);
-        filesToCache.push(`/img/${i}-380_2x.jpg`);
-        filesToCache.push(`/img/${i}-512_1x.jpg`);
-        filesToCache.push(`/img/${i}-512_2x.jpg`);
+        filesToCache.push(`/img/${i}.webp`);
+        filesToCache.push(`/img/${i}-380_1x.webp`);
+        filesToCache.push(`/img/${i}-380_2x.webp`);
+        filesToCache.push(`/img/${i}-512_1x.webp`);
+        filesToCache.push(`/img/${i}-512_2x.webp`);
     }
     console.log('[ServiceWorker] Install');
     e.waitUntil(

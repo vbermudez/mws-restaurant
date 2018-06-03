@@ -28,8 +28,9 @@
   },
   "homepage": "https://github.com/vbermudez/mws-restaurant-stage-1#readme",
   "dependencies": {
+    "compression": "^1.7.2",
+    "express": "^4.16.3",
     "finalhandler": "^1.1.1",
-    "h5bp": "^0.1.4",
     "serve-static": "^1.13.2"
   }
 }

@@ -3,7 +3,7 @@
  */
 class IMGHelper {
     static imageUrlForRestaurant(restaurant) {
-        return `/img/${restaurant.id}.jpg`;
+        return `/img/${restaurant.id}.webp`;
     }
 
     static createImageEl(restaurant) {
@@ -26,8 +26,8 @@ class IMGHelper {
         for (const key of Object.keys(mediaQueries)) {
             const filePart = mediaQueries[key];
             const s = document.createElement('source');
-            const img1x = `/img/${restaurant.id}${filePart}1x.jpg 1x`; 
-            const img2x = `/img/${restaurant.id}${filePart}2x.jpg 2x`; 
+            const img1x = `/img/${restaurant.id}${filePart}1x.webp 1x`; 
+            const img2x = `/img/${restaurant.id}${filePart}2x.webp 2x`; 
         
             s.setAttribute('media', key);
             s.setAttribute('srcset', `${img1x},${img2x}`);

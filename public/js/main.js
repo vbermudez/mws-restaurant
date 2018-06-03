@@ -1,4 +1,5 @@
 let restaurants,
+  all_restaurants,
   neighborhoods,
   cuisines;
 var map;
@@ -14,6 +15,22 @@ var markers = [];
     });
   }
 })();
+
+var observer = new IntersectionObserver((changes, observer) => {
+  changes.forEach(change => {
+    if (change.intersectionRatio <= 0) return;
+  
+    const image = change.target;
+    const restaurant = { id: image.dataset.restaurant };
+    const sources = IMGHelper.getResponsiveImgSources(restaurant);
+    
+    for (source of sources) {
+      image.append(source);
+    }
+
+    observer.unobserve(image);
+  });
+});
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -111,9 +128,10 @@ updateRestaurants = () => {
 resetRestaurants = (restaurants) => {
   // Remove all restaurants
   self.restaurants = [];
+  self.last_idx = 0;
   const ul = document.getElementById('restaurants-list');
   ul.innerHTML = '';
-
+  
   // Remove all map markers
   self.markers.forEach(m => m.setMap(null));
   self.markers = [];
@@ -143,14 +161,18 @@ createRestaurantHTML = (restaurant) => {
   // image.setAttribute('aria-labelledby', restaurant.name);
   image.setAttribute('role', 'presentation'); //'img');
   image.setAttribute('alt', '');
+  
+  image.classList.add('observable');
+  image.dataset.restaurant = restaurant.id;
 
-  const sources = IMGHelper.getResponsiveImgSources(restaurant);
+  // const sources = IMGHelper.getResponsiveImgSources(restaurant);
 
-  for (source of sources) {
-    image.append(source);
-  }
+  // for (source of sources) {
+  //   image.append(source);
+  // }
   
   li.append(image);
+  self.observer.observe(image);
 
   const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
