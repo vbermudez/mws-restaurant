@@ -40,7 +40,7 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('sync', event => {
-    if (event.tag === 'firstSync') {
+    if (event.tag === 'restaurants-sync') {
         if (db == null) db = new IDBHelper(self);
         // since the API server is readonly, don't care about "real syncing".
         
