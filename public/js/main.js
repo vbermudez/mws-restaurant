@@ -175,6 +175,9 @@ window.addEventListener('load', event => {
 // document.addEventListener('DOMContentLoaded', event => {
   app.fetchNeighborhoods();
   app.fetchCuisines();
+
+  document.querySelector('#neighborhoods-select').addEventListener('change', app.updateRestaurants, false);
+  document.querySelector('#cuisines-select').addEventListener('change', app.updateRestaurants, false);
 });
 
 /**

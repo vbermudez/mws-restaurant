@@ -46,7 +46,12 @@ class IDBHelper {
         const tx = this.db.transaction([ this.storeName ], 'readwrite');
         const store = tx.objectStore(this.storeName);
 
-        return await store.put(restaurant);
+        return new Promise((resolve, reject) => {
+            const req = store.put(restaurant);
+            req.onsuccess = event => resolve(event.target.result);
+            req.onerror = event => reject(event);
+        });
+        
     }
 
     async addAll(restaurants) {
@@ -56,7 +61,11 @@ class IDBHelper {
         const store = tx.objectStore(this.storeName);
 
         await restaurants.asyncEach( 
-            async (restaurant) => await store.put(restaurant) 
+            async (restaurant) => new Promise((resolve, reject) => {
+                const req = store.put(restaurant);
+                req.onsuccess = event => resolve(event.target.result);
+                req.onerror = event => reject(event);
+            }) 
         );
     }
 
@@ -66,7 +75,11 @@ class IDBHelper {
         const tx = this.db.transaction([ this.storeName ], 'readonly');
         const store = tx.objectStore(this.storeName);
 
-        return await store.get(id);
+        return new Promise((resolve, reject) => {
+            const req = store.get(id);
+            req.onsuccess = event => resolve(event.target.result);
+            req.onerror = event => reject(event);
+        });
     }
 
     async getAll() {
@@ -75,7 +88,11 @@ class IDBHelper {
         const tx = this.db.transaction([ this.storeName ], 'readonly');
         const store = tx.objectStore(this.storeName);
 
-        return await store.getAll();
+        return new Promise((resolve, reject) => {
+            const req = store.getAll();
+            req.onsuccess = event => resolve(event.target.result);
+            req.onerror = event => reject(event);
+        });
     }
 
     close() {
