@@ -1,8 +1,16 @@
+'use strict';
+
 /**
  * Common database helper functions.
  */
-class DBHelper {
+let _DBHelper_IDB_ = null;
 
+class DBHelper {
+  static idb() {
+    if (_DBHelper_IDB_ == null) _DBHelper_IDB_ = new IDBHelper(window);
+
+    return _DBHelper_IDB_;
+  }
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -15,80 +23,87 @@ class DBHelper {
   /**
    * Fetch all restaurants.
    */
-  static fetchRestaurants() {
-    return fetch(DBHelper.DATABASE_URL)
-            .then(res => res.json())
-            .catch(e => console.error(e));
+  static async fetchRestaurants() {
+    let restaurants = await DBHelper.idb().getAll();
+
+    // If IDB had been populated, return results
+    if (restaurants && restaurants.length) return restaurants;
+
+    // Else, fetch and add to IDB ...
+    const res = await fetch(DBHelper.DATABASE_URL);
+    restaurants = await res.json();
+
+    await DBHelper.idb().addAll(restaurants);
+
+    return restaurants;
   }
 
   /**
    * Fetch a restaurant by its ID.
    */
-  static fetchRestaurantById(id) {
-    return fetch(`${DBHelper.DATABASE_URL}/${id}`)
-            .then(res => res.json())
-            .catch(e => console.error(e));
+  static async fetchRestaurantById(id) {
+    return await DBHelper.idb().get(id);
+    // const res = await fetch(`${DBHelper.DATABASE_URL}/${id}`);
+
+    // return await res.json();
   }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
-  static fetchRestaurantByCuisine(cuisine) {
-    return DBHelper.fetchRestaurants()
-            .then( restaurants => restaurants.filter(r => r.cuisine_type == cuisine) );
+  static async fetchRestaurantByCuisine(cuisine) {
+    const restaurants = await DBHelper.fetchRestaurants();
+
+    return restaurants.filter(r => r.cuisine_type == cuisine);
   }
 
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
-  static fetchRestaurantByNeighborhood(neighborhood) {
-    return DBHelper.fetchRestaurants()
-            .then( restaurants => restaurants.filter(r => r.neighborhood == neighborhood) );
+  static async fetchRestaurantByNeighborhood(neighborhood) {
+    const restaurants = await DBHelper.fetchRestaurants();
+
+    return restaurants.filter(r => r.neighborhood == neighborhood);
   }
 
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
    */
-  static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
-    return DBHelper.fetchRestaurants().then(restaurants => {
-      let results = restaurants;
+  static async fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
+    const restaurants = await DBHelper.fetchRestaurants();
+    let results = restaurants;
       
-      if (cuisine != 'all') { // filter by cuisine
-        results = results.filter(r => r.cuisine_type == cuisine);
-      }
+    if (cuisine != 'all') { 
+      // filter by cuisine
+      results = results.filter(r => r.cuisine_type == cuisine);
+    }
+    
+    if (neighborhood != 'all') { 
+      // filter by neighborhood
+      results = results.filter(r => r.neighborhood == neighborhood);
+    }
 
-      if (neighborhood != 'all') { // filter by neighborhood
-        results = results.filter(r => r.neighborhood == neighborhood);
-      }
-
-      return results;
-    });
+    return results;
   }
 
   /**
    * Fetch all neighborhoods with proper error handling.
    */
-  static fetchNeighborhoods() {
-    return DBHelper.fetchRestaurants().then(
-      restaurants => {
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
+  static async fetchNeighborhoods() {
+    const restaurants = await DBHelper.fetchRestaurants();
+    const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
         
-        return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i);
-      }
-    );
+    return neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i);
   }
 
   /**
    * Fetch all cuisines with proper error handling.
    */
-  static fetchCuisines() {
-    return DBHelper.fetchRestaurants().then(
-      restaurants => {
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
+  static async fetchCuisines() {
+    const restaurants = await DBHelper.fetchRestaurants();
+    const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
 
-        return cuisines.filter((v, i) => cuisines.indexOf(v) == i);
-      }
-    );
+    return cuisines.filter((v, i) => cuisines.indexOf(v) == i);
   }
 
   /**
@@ -97,26 +112,4 @@ class DBHelper {
   static urlForRestaurant(restaurant) {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
-
-  /**
-   * Restaurant image URL.
-   */
-  static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}.jpg`);
-  }
-
-  /**
-   * Map marker for a restaurant.
-   */
-  static mapMarkerForRestaurant(restaurant, map) {
-    const marker = new google.maps.Marker({
-      position: restaurant.latlng,
-      title: restaurant.name,
-      url: DBHelper.urlForRestaurant(restaurant),
-      map: map,
-      animation: google.maps.Animation.DROP}
-    );
-    return marker;
-  }
-
 }

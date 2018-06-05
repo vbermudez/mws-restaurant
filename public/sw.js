@@ -1,5 +1,8 @@
-var cacheName = 'restaurants';
-var filesToCache = [
+self.importScripts('/js/utils.js');
+self.importScripts('/js/idbhelper.js');
+
+const cacheName = 'restaurants';
+const filesToCache = [
     '/',
     '/manifest.json',
     '/css/styles.css',
@@ -9,6 +12,11 @@ var filesToCache = [
     '/js/restaurant_info.js',
     'http://localhost:1337/restaurants'
 ];
+const apiServerUrl = () => {
+    const port = 1337; // Change this to your server port
+    return `http://localhost:${port}/restaurants`;
+};
+let db = null;
 
 self.addEventListener('install', e => {
     for (let i = 1; i < 11; ++i) {
@@ -20,14 +28,29 @@ self.addEventListener('install', e => {
         filesToCache.push(`/img/${i}-512_2x.webp`);
     }
     console.log('[ServiceWorker] Install');
+    
     e.waitUntil(
         caches.open(cacheName).then(cache => {
+            db = new IDBHelper(self);
+            console.log('[ServiceWorker] Created IDBHelper instance', db);            
             console.log('[ServiceWorker] Caching app shell');
             return cache.addAll(filesToCache);
         })
     );
 });
 
+self.addEventListener('sync', event => {
+    if (event.tag === 'firstSync') {
+        if (db == null) db = new IDBHelper(self);
+        // since the API server is readonly, don't care about "real syncing".
+        
+        event.waitUntil(
+            fetch( apiServerUrl() )
+                .then(res => res.json())
+                .then( async restaurants => await db.addAll(restaurants) )
+        );
+    }
+});
 
 self.addEventListener('fetch', event => {
     event.respondWith(
