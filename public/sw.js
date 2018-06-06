@@ -10,6 +10,7 @@ const filesToCache = [
     '/js/imghelper.js',
     '/js/main.js',
     '/js/restaurant_info.js',
+    '/restaurant.html',
     'http://localhost:1337/restaurants'
 ];
 const apiServerUrl = () => {
@@ -20,7 +21,7 @@ let db = null;
 
 self.addEventListener('install', e => {
     for (let i = 1; i < 11; ++i) {
-        filesToCache.push(`/restaurant.html?id=${i}`);
+        // filesToCache.push(`/restaurant.html?id=${i}`);
         filesToCache.push(`/img/${i}.webp`);
         filesToCache.push(`/img/${i}-380_1x.webp`);
         filesToCache.push(`/img/${i}-380_2x.webp`);

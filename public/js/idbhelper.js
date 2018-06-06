@@ -70,13 +70,14 @@ class IDBHelper {
     }
 
     async get(id) {
+        if (!id || isNaN(id)) throw new Error(`Id is null or empty, or is not a number`);
         if (this.db == null) await this.open();
         
         const tx = this.db.transaction([ this.storeName ], 'readonly');
         const store = tx.objectStore(this.storeName);
 
         return new Promise((resolve, reject) => {
-            const req = store.get(id);
+            const req = store.get( parseInt(id, 10) );
             req.onsuccess = event => resolve(event.target.result);
             req.onerror = event => reject(event);
         });
