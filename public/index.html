@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" src="https://normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
   <link rel="manifest" href="/manifest.json">
 
@@ -20,10 +21,29 @@
   <header>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
+
+      <div class="login">
+        <i id="userIcon" class="fas fa-user-circle fa-2x" aria-label="user icon, logged off"></i>
+      </div>
     </nav>
   </header>
 
   <a class="skip-main" href="#filter-options">Skip to main content</a>
+
+  <aside class="hide">
+    <form id="loginForm">
+      <fieldset>
+        <legend>Log in form</legend>
+        <label>Username: <input type="text" name="username" class="form-control" required autocomplete="username"></label>
+        <label>Password: <input type="password" name="password" class="form-control" required autocomplete="current-password"></label>
+      </fieldset>
+
+      <fieldset>
+        <button type="submit">Login</button>
+        <button type="reset">Cancel</button>
+      </fieldset>
+    </form>
+  </aside>
 
   <main id="maincontent">
     <section aria-label="interactive map" role="application" id="map-container">
@@ -61,6 +81,7 @@
   <script async defer type="application/javascript" charset="utf-8" src="/js/idbhelper.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/dbhelper.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/maphelper.js"></script>
+  <script async defer type="application/javascript" charset="utf-8" src="/js/security.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
 </body>

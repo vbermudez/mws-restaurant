@@ -42,10 +42,16 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static async fetchRestaurantById(id) {
-    return await DBHelper.idb().get(id);
-    // const res = await fetch(`${DBHelper.DATABASE_URL}/${id}`);
+    let restaurant = await DBHelper.idb().get(id);
 
-    // return await res.json();
+    if (!restaurant) { // If not in IDB, fetch and add to IDB
+      const res = await fetch(`${DBHelper.DATABASE_URL}/${id}`);
+      restaurant = await res.json();
+
+      await DBHelper.idb().add(restaurant);
+    }
+
+    return restaurant;
   }
 
   /**
