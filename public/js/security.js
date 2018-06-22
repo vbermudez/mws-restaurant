@@ -14,10 +14,10 @@ class Security {
     static async requestCredential() {
         if (!navigator.credentials) return false;
 
-        const credential = await navigator.credentials.get({ password: true });
+        const credential = await navigator.credentials.get({ password: true, mediation: 'optional' });
 
         if (credential) {
-            return doLogin({
+            return Security.doLogin({
                 loggedOn: true
             });
         }
