@@ -198,7 +198,7 @@ window.addEventListener('load', event => {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  if (typeof MapHelper === 'undefined') {
+  if (typeof MapHelper === 'undefined') { // If the script is not loaded, wait to next tick ...
     return setTimeout(window.initMap, 100);
   }
 
