@@ -16,7 +16,7 @@ class Security {
 
         const credential = await navigator.credentials.get({ password: true, mediation: 'optional' });
 
-        if (credential) {
+        if (credential) { 
             return Security.doLogin({
                 loggedOn: true
             });
@@ -25,23 +25,48 @@ class Security {
         return false;
     }
 
+    static hideForm () {
+        const form = document.querySelector('#loginForm');
+        const aside = form.parentElement;
+
+        aside.classList.remove('overlay');
+        aside.classList.add('hide');
+        form.removeEventListener('submit', Security.doLogin);
+        form.removeEventListener('reset', Security.doReset);
+    }
+
+    static setLoggedOn() {
+        const icon = document.querySelector('#userIcon');
+        const parent = icon.closest('.login');
+
+        parent.classList.add('loggedIn');
+        icon.removeEventListener('click', Security.doLogon);
+        icon.addEventListener('click', Security.doLogoff, false);
+    }
+
+    static setLoggedOff() {
+        const icon = document.querySelector('#userIcon');
+        const parent = icon.closest('.login');
+
+        parent.classList.remove('loggedIn');
+        icon.removeEventListener('click', Security.doLogoff);
+        icon.addEventListener('click', Security.doLogon, false);
+    }
+
     static doLogin(e) {
-        if (e && e.loggedOn) return true;
+        if (e && e.loggedOn) {
+            Security.setLoggedOn();
+
+            return true;
+        }
 
         e.preventDefault();
 
         const form = document.querySelector('#loginForm');
 
         if (form.id.value == form.password.value) {
-            const aside = form.parentElement;
-            const icon = document.querySelector('#userIcon');
-            const parent = icon.closest('.login');
-
-            parent.classList.add('loggedIn');
-            aside.classList.remove('overlay');
-            aside.classList.add('hide');
-            icon.removeEventListener('click', Security.doLogon);
-            icon.addEventListener('click', Security.doLogoff, false);
+            Security.setLoggedOn();
+            Security.hideForm();
             Security.storeCredentials(form).then(cred => console.log(cred));
         }
 
@@ -50,12 +75,7 @@ class Security {
 
     static doLogoff(e) {
         if (confirm('Do you want to logoff?')) {
-            const icon = document.querySelector('#userIcon');
-            const parent = icon.closest('.login');
-
-            parent.classList.remove('loggedIn');
-            icon.removeEventListener('click', Security.doLogoff);
-            icon.addEventListener('click', Security.doLogon, false);
+            Security.setLoggedOff();
             Security.preventSilentAcces();
         }
     }
