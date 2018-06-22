@@ -81,7 +81,7 @@ class Security {
     }
 
     static async preventSilentAcces() {
-        if (!navigator.credentials) return await false; // Not supported!
+        if (!navigator.credentials) return false; // Not supported!
 
         return await navigator.credentials.preventSilentAccess();
     }

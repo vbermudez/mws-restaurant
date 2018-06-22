@@ -342,7 +342,7 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
@@ -392,7 +392,7 @@ nav h1 a {
   display: block;
   position: relative;
   width: 300px;
-  height: 200px;
+  height: 145px;
   margin: auto;
   top: calc(100vh / 2 - 100px);
   background-color: white;
@@ -401,6 +401,34 @@ nav h1 a {
 
 .overlay > form > fieldset {
   border: none;
+  padding-top: 10px;
+}
+
+.overlay > form  label {
+  font-weight: bold;
+}
+
+.overlay > form input {
+  float: right;
+}
+
+.overlay > form button {
+  background-color: #3392db;
+  /* border-bottom: 3px solid #eee; */
+  color: #fff;
+  display: inline-block;
+  font-size: 10pt;
+  margin: auto;
+  padding: 8px 30px 10px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  width: 49%;
+}
+
+.overlay > form button[type="reset"] {
+  background-color: white;
+  color: black;
 }
 
 @media screen and (min-width: 700px) {
