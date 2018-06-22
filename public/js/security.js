@@ -8,11 +8,7 @@ class Security {
 
         const credential = new PasswordCredential(form);
 
-        return await navigator.credentials.store(credential).then(cred => {
-            console.log(cred);
-
-            return cred;
-        });
+        return await navigator.credentials.store(credential);
     }
 
     static async requestCredential() {
