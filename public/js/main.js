@@ -198,6 +198,10 @@ window.addEventListener('load', event => {
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+  if (typeof MapHelper === 'undefined') {
+    return setTimeout(window.initMap, 100);
+  }
+
   app.initMap();
 }
 
