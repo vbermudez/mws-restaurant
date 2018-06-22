@@ -33,9 +33,10 @@
   <aside class="hide">
     <form id="loginForm">
       <fieldset>
-        <legend>Log in form</legend>
-        <label>Username: <input type="text" name="username" class="form-control" required autocomplete="username"></label>
+        <legend>Log in form (user == password)</legend>
+        <label>User name: <input type="text" name="id" class="form-control" required autocomplete="username"></label>
         <label>Password: <input type="password" name="password" class="form-control" required autocomplete="current-password"></label>
+        <input type="hidden" name="csrf_token" value="******" />
       </fieldset>
 
       <fieldset>

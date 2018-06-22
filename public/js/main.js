@@ -175,6 +175,7 @@ const validate = async () => {
     const parent = icon.closest('.login');
 
     parent.classList.add('loggedIn');
+    icon.addEventListener('click', Security.doLogoff, false);
   } else {
     icon.addEventListener('click', Security.showForm, false);
   }

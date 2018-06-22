@@ -4,22 +4,23 @@ class Security {
     constructor() { }
 
     static async storeCredentials(form) {
-        if (!navigator.credentials) return await false; // Not supported!
+        if (!navigator.credentials) return false; // Not supported!
 
         const credential = new PasswordCredential(form);
 
-        return await navigator.credentials.store(credential);
+        return await navigator.credentials.store(credential).then(cred => {
+            console.log(cred);
+
+            return cred;
+        });
     }
 
     static async requestCredential() {
         if (!navigator.credentials) return false;
 
-        const credential = await navigator.credentials.get({ password: true, mediation: 'optional' });
+        const credential = await navigator.credentials.get({ password: true });
 
         if (credential) {
-            form.username.value = credential.id;
-            form.password.value = credential.password;
-
             return doLogin({
                 loggedOn: true
             });
@@ -29,27 +30,52 @@ class Security {
     }
 
     static doLogin(e) {
-        if (e && e.loggedOn) return;
+        if (e && e.loggedOn) return true;
 
         e.preventDefault();
 
         const form = document.querySelector('#loginForm');
 
-        if (form.username == form.password) {
+        if (form.id.value == form.password.value) {
             const aside = form.parentElement;
+            const icon = document.querySelector('#userIcon');
+            const parent = icon.closest('.login');
 
-            if (!aside.classList.contains('hide')) aside.classList.add('hide');
-
-            Security.storeCredentials(form);
+            parent.classList.add('loggedIn');
+            aside.classList.remove('overlay');
+            aside.classList.add('hide');
+            icon.removeEventListener('click', Security.doLogon);
+            icon.addEventListener('click', Security.doLogoff, false);
+            Security.storeCredentials(form).then(cred => console.log(cred));
         }
 
         return false;
     }
 
-    static async doLogoff() {
+    static doLogoff(e) {
+        if (confirm('Do you want to logoff?')) {
+            const icon = document.querySelector('#userIcon');
+            const parent = icon.closest('.login');
+
+            parent.classList.remove('loggedIn');
+            icon.removeEventListener('click', Security.doLogoff);
+            icon.addEventListener('click', Security.doLogon, false);
+            Security.preventSilentAcces();
+        }
+    }
+
+    static async preventSilentAcces() {
         if (!navigator.credentials) return await false; // Not supported!
 
         return await navigator.credentials.preventSilentAccess();
+    }
+
+    static doReset(e) {
+        const form = document.querySelector('#loginForm');
+        const aside = form.parentElement;
+
+        aside.classList.remove('overlay');
+        aside.classList.add('hide');
     }
 
     static showForm() {
@@ -59,5 +85,6 @@ class Security {
         aside.classList.add('overlay');
         aside.classList.remove('hide');
         form.addEventListener('submit', Security.doLogin, false);
+        form.addEventListener('reset', Security.doReset, false);
     }
 }

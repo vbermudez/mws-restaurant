@@ -367,7 +367,7 @@ nav h1 a {
 }
 
 .loggedIn {
-  color: green;
+  color: lightgreen;
 }
 
 .login > i {
