@@ -21,30 +21,10 @@
   <header>
     <nav>
       <h1><a href="/">Restaurant Reviews</a></h1>
-
-      <div class="login">
-        <i id="userIcon" class="fas fa-user-circle fa-2x" aria-label="user icon, logged off"></i>
-      </div>
     </nav>
   </header>
 
   <a class="skip-main" href="#filter-options">Skip to main content</a>
-
-  <aside class="hide">
-    <form id="loginForm">
-      <fieldset>
-        <legend>Log in form (user == password)</legend>
-        <label>User name: <input type="text" name="id" class="form-control" required autocomplete="username"></label>
-        <label>Password: <input type="password" name="password" class="form-control" required autocomplete="current-password"></label>
-        <input type="hidden" name="csrf_token" value="******" />
-      </fieldset>
-
-      <fieldset>
-        <button type="submit">Login</button>
-        <button type="reset">Cancel</button>
-      </fieldset>
-    </form>
-  </aside>
 
   <main id="maincontent">
     <section aria-label="interactive map" role="application" id="map-container">
@@ -82,7 +62,6 @@
   <script async defer type="application/javascript" charset="utf-8" src="/js/idbhelper.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/dbhelper.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/maphelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/security.js"></script>
   <script async defer type="application/javascript" charset="utf-8" src="/js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
 </body>

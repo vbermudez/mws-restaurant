@@ -167,26 +167,12 @@ class App {
 }
 
 const app = new App();
-const validate = async () => {
-  const success = await Security.requestCredential();
-  const icon = document.querySelector('#userIcon');
-
-  if (success) {
-    const parent = icon.closest('.login');
-
-    parent.classList.add('loggedIn');
-    icon.addEventListener('click', Security.doLogoff, false);
-  } else {
-    icon.addEventListener('click', Security.showForm, false);
-  }
-};
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 window.addEventListener('load', event => {
 // document.addEventListener('DOMContentLoaded', event => {
-  validate();
   app.fetchNeighborhoods();
   app.fetchCuisines();
 

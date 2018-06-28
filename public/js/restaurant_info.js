@@ -27,6 +27,14 @@ class RestaurantInfo {
     return this.restaurant;
   }
 
+  async fetchReviews() {
+    if (!this.restaurant) this.restaurant = await this.fetchRestaurantFromURL();
+
+    const restaurant_id = this.restaurant.id;
+
+    return await DBHelper.fetchReviewsByRestaurant(restaurant_id);
+  }
+
   /**
    * Create restaurant HTML and add it to the webpage
    */
@@ -54,8 +62,33 @@ class RestaurantInfo {
     if (this.restaurant.operating_hours) {
       this.fillRestaurantHoursHTML();
     }
+
+    this.fillFavorite();
+
     // fill reviews
     this.fillReviewsHTML();
+  }
+
+  fillFavorite() {
+    const fav = document.createElement('a');
+
+    fav.href = '#';
+
+    if (this.restaurant.is_favorite) {
+      fav.setAttribute('aria-label', 'Unmark as favorite');
+      fav.className = 'favorite is-fav';
+      fav.innerHTML = '★';
+    } else {
+      fav.setAttribute('aria-label', 'Mark as favorite');
+      fav.className = 'favorite';
+      fav.innerHTML = '☆';
+    }
+    
+    fav.onclick = Utils.favoriteOnClick;
+    fav.dataset.restaurant = JSON.stringify(this.restaurant);
+
+    const name = document.querySelector('#restaurant-name');
+    name.prepend(fav);
   }
 
   /**
@@ -83,13 +116,13 @@ class RestaurantInfo {
   /**
    * Create all reviews HTML and add them to the webpage.
    */
-  fillReviewsHTML() {
-    const reviews = this.restaurant.reviews;
+  async fillReviewsHTML() {
+    const reviews = await this.fetchReviews();
     const container = document.querySelector('#reviews-container');
-    const title = document.createElement('h2');
+    // const title = document.createElement('h2');
     
-    title.innerHTML = 'Reviews';
-    container.appendChild(title);
+    // title.innerHTML = 'Reviews';
+    // container.appendChild(title);
 
     if (!reviews) {
       const noReviews = document.createElement('p');
@@ -106,7 +139,7 @@ class RestaurantInfo {
       ul.appendChild( this.createReviewHTML(review) );
     });
 
-    container.appendChild(ul);
+    // container.appendChild(ul);
   }
 
   /**
@@ -120,7 +153,7 @@ class RestaurantInfo {
     li.appendChild(name);
 
     const date = document.createElement('p');
-    date.innerHTML = review.date;
+    date.innerHTML = (new Date(review.updatedAt)).toString();
     li.appendChild(date);
 
     const rating = document.createElement('p');
@@ -128,7 +161,7 @@ class RestaurantInfo {
     li.appendChild(rating);
 
     const comments = document.createElement('p');
-    comments.innerHTML = review.comments;
+    comments.innerHTML = unescape(review.comments);
     li.appendChild(comments);
 
     return li;
@@ -162,6 +195,53 @@ class RestaurantInfo {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
+  hideForm() {
+    const form = document.querySelector('#reviewForm');
+    const aside = form.parentElement;
+
+    aside.classList.remove('overlay');
+    aside.classList.add('hide');
+  } 
+
+  resetForm(e) {
+    this.hideForm();
+  }
+
+  showForm() {
+    const form = document.querySelector('#reviewForm');
+    const aside = form.parentElement;
+
+    aside.classList.add('overlay');
+    aside.classList.remove('hide');
+  }
+
+  async createReview(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const restaurant_id = this.restaurant.id;
+    const name = form.name.value;
+    const rating = form.rating.value;
+    const comments = form.comments.value;
+    const review = await DBHelper.addRestaurantReview({
+      restaurant_id: parseInt(restaurant_id, 10),
+      name: name,
+      rating: parseInt(rating, 10), 
+      comments: comments
+    });
+
+    if (!review.updatedAt) {
+      review.updatedAt = new Date();
+    }
+
+    const ul = document.querySelector('#reviews-list');
+
+    ul.appendChild( this.createReviewHTML(review) );
+    form.reset();
+
+    return false;
+  }
+
   async initMap() {
     if (this.mapHelper == null) this.mapHelper = new MapHelper();
 
@@ -173,6 +253,13 @@ class RestaurantInfo {
     this.mapHelper.initMap(loc, zoom);
     this.fillBreadcrumb();
     this.mapHelper.addMarkersToMap([ this.restaurant ]);
+
+    const addReview = document.querySelector('.add-review');
+    const form = document.querySelector('#reviewForm');
+    
+    addReview.addEventListener('click', this.showForm, false);
+    form.onsubmit = this.createReview.bind(this);
+    form.onreset = this.resetForm.bind(this);
   }
 }
 

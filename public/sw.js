@@ -17,6 +17,10 @@ const apiServerUrl = () => {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/restaurants`;
 };
+const apiServerReviewsUrl = () => {
+    const port = 1337; // Change this to your server port
+    return `http://localhost:${port}/reviews`;
+};
 let db = null;
 
 self.addEventListener('install', e => {
@@ -40,15 +44,73 @@ self.addEventListener('install', e => {
     );
 });
 
+
+const sendPendingRestaurants = async () => {
+    if (db == null) db = new IDBHelper(self);
+
+    const restaurants = await db.getPendingRestaurantUpdates();
+
+    if (restaurants.length == 0) return true;
+
+    await restaurants.asyncEach(async (restaurant) => {
+        await fetch(`${apiServerUrl()}/${restaurant.id}?is_favorite=${restaurant.is_favorite.toString()}`);
+    });
+
+    return true;
+};
+const sendPendingReviews = async () => {
+    if (db == null) db = new IDBHelper(self);
+
+    const reviews = await db.getPendingReviews();
+
+    if (reviews.length == 0) return [];
+
+    const postedReviews = await reviews.asyncMap(async (review) => {
+        const res = await fetch(apiServerReviewsUrl(), {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(review)
+        });
+        const reviewRes = await res.json();
+        
+        await db.removeReview(review.id);
+        await db.addReview(reviewRes);
+
+        return reviewRes;
+    });
+
+    return postedReviews;
+};
+const fetchRestaurants = async () => {
+    if (db == null) db = new IDBHelper(self);
+
+    const res = await fetch(apiServerUrl());
+    restaurants = await res.json();
+
+    return await db.addAll(restaurants);
+};
+const fetchReviews = async () => {
+    if (db == null) db = new IDBHelper(self);
+
+    const res = await fetch(apiServerReviewsUrl());
+    reviews = await res.json();
+
+    return await db.addAllReviews(reviews);
+};
+
 self.addEventListener('sync', event => {
-    if (event.tag === 'restaurants-sync') {
+    if (event.tag === 'restaurants-reviews-sync') {
         if (db == null) db = new IDBHelper(self);
-        // since the API server is readonly, don't care about "real syncing".
         
         event.waitUntil(
-            fetch( apiServerUrl() )
-                .then(res => res.json())
-                .then( async restaurants => await db.addAll(restaurants) )
+            Promise.all([
+                sendPendingRestaurants(),
+                fetchRestaurants(),
+                sendPendingReviews(),
+                fetchReviews()
+            ]).then(() => true)
         );
     }
 });

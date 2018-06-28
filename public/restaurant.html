@@ -54,11 +54,39 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container">
+      <h2>Reviews</h2>
       <ul id="reviews-list"></ul>
+      <a href="#" class="add-review" aria-label="Add new review">Add review</a>
     </section>
     <!-- End reviews -->
   </main>
   <!-- End main -->
+
+  <aside class="hide">
+    <form id="reviewForm">
+      <fieldset>
+        <legend>Here, you can write your review!</legend>
+        <label for="name">Your name:</label>
+        <input type="text" id="name" name="name" class="form-control" required autocomplete="false">
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" class="form-control" required>
+          <option value="0"></option>
+          <option value="1">★</option>
+          <option value="2">★★</option>
+          <option value="3" selected>★★★</option>
+          <option value="4">★★★★</option>
+          <option value="5">★★★★★</option>
+        </select>
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" class="form-control" required aria-label="your review"></textarea>
+      </fieldset>
+
+      <fieldset>
+        <button type="submit">Submit</button>
+        <button type="reset">Cancel</button>
+      </fieldset>
+    </form>
+  </aside>
 
   <!-- Beginning footer -->
   <footer id="footer">

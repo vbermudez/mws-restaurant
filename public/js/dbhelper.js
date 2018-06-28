@@ -4,6 +4,7 @@
  * Common database helper functions.
  */
 let _DBHelper_IDB_ = null;
+let _min_review_id = 1000;
 
 class DBHelper {
   static idb() {
@@ -11,6 +12,7 @@ class DBHelper {
 
     return _DBHelper_IDB_;
   }
+
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -18,6 +20,17 @@ class DBHelper {
   static get DATABASE_URL() {
     const port = 1337; // Change this to your server port
     return `http://localhost:${port}/restaurants`;
+  }
+
+  static get REVIEWS_URL() {
+    const port = 1337; // Change this to your server port
+    return `http://localhost:${port}/reviews`;
+  }
+
+  static async getTempReviewId() {
+    const num = await DBHelper.idb().countReviews();
+
+    return num + _min_review_id;
   }
 
   /**
@@ -38,6 +51,22 @@ class DBHelper {
     return restaurants;
   }
 
+  /** 
+   * Fetch all reviews 
+   */
+  static async fetchReviews() {
+    let reviews = await DBHelper.idb().getAllReviews();
+
+    if (reviews && reviews.length) return reviews;
+    
+    const res = await fetch(DBHelper.REVIEWS_URL);
+    reviews = await res.json();
+
+    await DBHelper.idb().addAllReviews(reviews);
+
+    return reviews;
+  }
+
   /**
    * Fetch a restaurant by its ID.
    */
@@ -52,6 +81,38 @@ class DBHelper {
     }
 
     return restaurant;
+  }
+
+  /**
+   * Fetch a review by its ID.
+   */
+  static async fetchReviewById(id) {
+    let review = await DBHelper.idb().getReview(id);
+
+    if (!review) { // If not in IDB, fetch and add to IDB
+      const res = await fetch(`${DBHelper.REVIEWS_URL}/${id}`);
+      review = await res.json();
+
+      await DBHelper.idb().addReview(review);
+    }
+
+    return review;
+  }
+
+  /**
+   * Fetch a reviews by restaurant ID.
+   */
+  static async fetchReviewsByRestaurant(restaurant_id) {
+    let reviews = await DBHelper.idb().getRestaurantReviews(restaurant_id);
+
+    if (reviews && reviews.length) return reviews;
+
+    const res = await fetch(`${DBHelper.REVIEWS_URL}?restaurant_id=${restaurant_id}`);
+    reviews = await res.json();
+
+    await DBHelper.idb().addAllReviews(reviews);
+
+    return reviews;
   }
 
   /**
@@ -112,6 +173,48 @@ class DBHelper {
     return cuisines.filter((v, i) => cuisines.indexOf(v) == i);
   }
 
+  static async updateFavorite(restaurant, favorite) {
+    restaurant.is_favorite = favorite;
+    
+    await DBHelper.idb().update(restaurant);
+
+    if (Utils.online) {
+      await fetch(`${DBHelper.DATABASE_URL}/${restaurant.id}?is_favorite=${favorite.toString()}`, {
+        method: 'put'
+      });
+    }
+  }
+
+  static onFavRestaurant(e) {
+    const restaurant = e.detail.restaurant;
+    const favorite = e.detail.favorite;
+
+    DBHelper.updateFavorite(restaurant, favorite);
+  }
+
+  static async addRestaurantReview(review) {
+    if (!Utils.online) {
+      review.id = await DBHelper.getTempReviewId();
+
+      await DBHelper.idb().addReview(review);
+
+      return review;
+    } else {
+      const res = await fetch(DBHelper.REVIEWS_URL, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(review)
+      });
+      const reviewRes = await res.json();
+
+      await DBHelper.idb().addReview(reviewRes);
+
+      return reviewRes;
+    }
+  }
+
   /**
    * Restaurant page URL.
    */
@@ -119,3 +222,5 @@ class DBHelper {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
 }
+
+window.addEventListener('favorite', DBHelper.onFavRestaurant);

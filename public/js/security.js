@@ -35,6 +35,24 @@ class Security {
         form.removeEventListener('reset', Security.doReset);
     }
 
+    static doReset(e) {
+        const form = document.querySelector('#loginForm');
+        const aside = form.parentElement;
+
+        aside.classList.remove('overlay');
+        aside.classList.add('hide');
+    }
+
+    static showForm() {
+        const form = document.querySelector('#loginForm');
+        const aside = form.parentElement;
+
+        aside.classList.add('overlay');
+        aside.classList.remove('hide');
+        form.addEventListener('submit', Security.doLogin, false);
+        form.addEventListener('reset', Security.doReset, false);
+    }
+
     static setLoggedOn() {
         const icon = document.querySelector('#userIcon');
         const parent = icon.closest('.login');
@@ -86,21 +104,5 @@ class Security {
         return await navigator.credentials.preventSilentAccess();
     }
 
-    static doReset(e) {
-        const form = document.querySelector('#loginForm');
-        const aside = form.parentElement;
-
-        aside.classList.remove('overlay');
-        aside.classList.add('hide');
-    }
-
-    static showForm() {
-        const form = document.querySelector('#loginForm');
-        const aside = form.parentElement;
-
-        aside.classList.add('overlay');
-        aside.classList.remove('hide');
-        form.addEventListener('submit', Security.doLogin, false);
-        form.addEventListener('reset', Security.doReset, false);
-    }
+    
 }

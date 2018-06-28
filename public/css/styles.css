@@ -358,20 +358,44 @@ nav h1 a {
   color: #666;
 }
 
-.login {
-  position: relative;
-  float: right;
-  color: white;
-  margin-right: 10px;
-  top: -20px;
+.favorite {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 2px;
+  font-size: 20pt;
+  color: black;
 }
 
-.loggedIn {
-  color: lightgreen;
+.favorite:hover, .favorite:focus {
+  color: #d18860;
+  text-decoration: none;
+  box-shadow: none;
 }
 
-.login > i {
-  cursor: pointer;
+.is-fav {
+  color: #d18860;
+}
+
+.add-review {
+  display: block;
+  font-weight: bold;
+  width: 85%;
+  background-color: black;  /* orange; */
+  border-bottom: 3px solid #eee;
+  color: #fff;
+  font-size: 10pt;
+  margin: 15px 0 0;
+  padding: 8px 30px 10px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.add-review:hover, .add-review:focus {
+  color: #d18860;
+  text-decoration: none;
+  box-shadow: none;
 }
 
 .hide {
@@ -385,16 +409,16 @@ nav h1 a {
   background-color: rgba(255, 255, 255, .8);
   width: 100%;
   height: 100%;
-  z-index: 4;
+  z-index: 1000;
 }
 
 .overlay > form {
   display: block;
   position: relative;
-  width: 300px;
-  height: 145px;
+  width: 450px;
+  height: 480px;
   margin: auto;
-  top: calc(100vh / 2 - 100px);
+  top: calc(100vh / 2 - 240px);
   background-color: white;
   border: 1px solid black;
 }
@@ -404,12 +428,40 @@ nav h1 a {
   padding-top: 10px;
 }
 
-.overlay > form  label {
+.overlay > form legend {
+  font-size: 20pt;
+  width: 100%;
+  text-align: center;
+}
+
+.overlay > form label {
+  display: block;
+  font-size: 16pt;
   font-weight: bold;
 }
 
 .overlay > form input {
-  float: right;
+  display: block;
+  font-size: 16pt;
+  width: 414px;
+}
+
+.overlay > form select {
+  display: block;
+  font-size: 16pt;
+  color: #d18860;
+  width: 420px;
+}
+
+.overlay > form select:hover, .overlay > form select:focus {
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.overlay > form textarea {
+  width: 414px;
+  height: 200px;
+  font-size: 16pt;
 }
 
 .overlay > form button {
@@ -467,6 +519,12 @@ nav h1 a {
   }
 }
 
+@media screen and (max-width: 785px) {
+  #restaurant-name {
+    margin-right: 40px;
+  }
+}
+
 @media screen and (max-width: 700px) {
   .inside #map-container {
     width: 100vw;
@@ -514,7 +572,7 @@ nav h1 a {
   }
 
   #restaurants-list {
-    display: block
+    display: block;
   }
 
   #restaurants-list p {
