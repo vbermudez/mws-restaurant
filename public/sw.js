@@ -91,7 +91,7 @@ const fetchRestaurants = async () => {
     if (db == null) db = new IDBHelper(self);
 
     const res = await fetch(apiServerUrl());
-    restaurants = await res.json();
+    const restaurants = await res.json();
 
     return await db.addAll(restaurants);
 };
@@ -99,7 +99,7 @@ const fetchReviews = async () => {
     if (db == null) db = new IDBHelper(self);
 
     const res = await fetch(apiServerReviewsUrl());
-    reviews = await res.json();
+    const reviews = await res.json();
 
     return await db.addAllReviews(reviews);
 };
@@ -108,14 +108,14 @@ self.addEventListener('sync', event => {
     if (event.tag === 'restaurants-reviews-sync') {
         if (db == null) db = new IDBHelper(self);
         
-        event.waitUntil(
-            Promise.all([
-                sendPendingRestaurants(),
-                fetchRestaurants(),
-                sendPendingReviews(),
-                fetchReviews()
-            ]).then(() => true)
-        );
+        event.waitUntil(async () => {
+            await sendPendingRestaurants();
+            await fetchRestaurants();
+            await sendPendingReviews();
+            await fetchReviews();
+
+            return true;
+        });
     }
 });
 
