@@ -2,7 +2,7 @@
 
 let _onlineState = true;
 
-export class Utils {
+class Utils {
     static get online() { return _onlineState; }
     static set online(value) { _onlineState = value; }
 

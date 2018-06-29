@@ -1,7 +1,7 @@
 /**
  * Common img helper functions.
  */
-class IMGHelper {
+export class IMGHelper {
     static imageUrlForRestaurant(restaurant) {
         return `/img/${restaurant.id}.webp`;
     }

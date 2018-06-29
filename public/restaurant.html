@@ -5,10 +5,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="black"/>
+  <meta name="Description" content="Restaurant reviews">
+
+  <link rel="preconnect" href="https://maps.googleapis.com">
+  <link rel="preconnect" href="https://normalize-css.googlecode.com">
+
+  <!-- <link rel="preload" href="https://normalize-css.googlecode.com/svn/trunk/normalize.css" as="style"> -->
+  <link rel="preload" href="/css/styles.css" as="style">
+
+  <link rel="preload" href="/js/register_sw.js" as="script">
+  <link rel="preload" href="/js/utils.js" as="script">
+  <link rel="preload" href="/js/imghelper.js" as="script">
+  <link rel="preload" href="/js/idbhelper.js" as="script">
+  <link rel="preload" href="/js/dbhelper.js" as="script">
+  <link rel="preload" href="/js/maphelper.js" as="script">
+  <link rel="preload" href="/js/restaurant_info.js" as="script">
 
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="https://normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
   <!-- Main CSS file -->
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
 
@@ -54,7 +68,7 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container">
-      <h2>Reviews</h2>
+      <h3>Reviews</h3>
       <ul id="reviews-list"></ul>
       <a href="#" class="add-review" aria-label="Add new review">Add review</a>
     </section>
@@ -95,18 +109,11 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <script>
-    function initMap() {}
-  </script>
   <script defer type="application/javascript" charset="utf-8" src="/js/register_sw.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/utils.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/imghelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/idbhelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/dbhelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/maphelper.js"></script>
-  <!-- Main javascript file -->
-  <script async defer type="text/javascript" src="/js/restaurant_info.js"></script>
-  <!-- Google Maps -->
+  <script>
+    window.initMap = () => {};
+  </script>
+  <script defer src="/js/restaurant_info.js" type="module"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 

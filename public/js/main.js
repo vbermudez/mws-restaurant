@@ -1,5 +1,13 @@
 'use strict';
 
+import { Utils } from './utils.js';
+import { DBHelper } from './dbhelper.js';
+import { IMGHelper } from './imghelper.js';
+import { MapHelper } from './maphelper.js';
+
+Utils.configureAsyncExtensions();
+Utils.configureEvents();
+
 class App {
   constructor() {
     this.restaurants = [];
@@ -123,7 +131,7 @@ class App {
     const image = document.createElement('picture');
     image.className = 'restaurant-img';
     image.setAttribute('role', 'presentation'); //'img');
-    image.setAttribute('alt', '');
+    image.setAttribute('alt', restaurant.name);
     image.classList.add('observable');
     image.dataset.restaurant = restaurant.id;    
     li.append(image);
@@ -171,23 +179,21 @@ const app = new App();
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-window.addEventListener('load', event => {
-// document.addEventListener('DOMContentLoaded', event => {
+// window.addEventListener('load', event => {
+document.addEventListener('DOMContentLoaded', event => {
+// window.onload = _ => {
   app.fetchNeighborhoods();
   app.fetchCuisines();
 
   document.querySelector('#neighborhoods-select').addEventListener('change', app.updateRestaurants, false);
   document.querySelector('#cuisines-select').addEventListener('change', app.updateRestaurants, false);
+// }; 
 });
 
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
-  if (typeof MapHelper === 'undefined') { // If the script is not loaded, wait to next tick ...
-    return setTimeout(window.initMap, 100);
-  }
-
   app.initMap();
 }
 

@@ -33,5 +33,11 @@ npm start
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
 
+### Lighthouse
+
+Here you can see the results: 
+- [Summary](./Lighthouse-summary-20180629.pdf)
+- [Expanded](./Lighthouse-expanded-20180629.pdf)
+
 
 

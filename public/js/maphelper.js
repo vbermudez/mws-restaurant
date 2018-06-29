@@ -1,6 +1,8 @@
 'use strict';
 
-class MapHelper {
+import { DBHelper } from './dbhelper.js';
+
+export class MapHelper {
     constructor(selector = '#map') {
         this.el = document.querySelector(selector);
         this.map = null;

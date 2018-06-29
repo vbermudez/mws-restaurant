@@ -1,5 +1,9 @@
-self.importScripts('/js/utils.js');
-self.importScripts('/js/idbhelper.js');
+'use strict';
+
+self.importScripts('/js/utils-nomodule.js');
+self.importScripts('/js/idbhelper-nomodule.js');
+
+Utils.configureAsyncExtensions();
 
 const cacheName = 'restaurants';
 const filesToCache = [

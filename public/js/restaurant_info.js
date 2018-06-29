@@ -1,5 +1,13 @@
 'use strict';
 
+import { Utils } from './utils.js';
+import { DBHelper } from './dbhelper.js';
+import { IMGHelper } from './imghelper.js';
+import { MapHelper } from './maphelper.js';
+
+Utils.configureAsyncExtensions();
+Utils.configureEvents();
+
 class RestaurantInfo {
   constructor() {
     this.restaurant = null;

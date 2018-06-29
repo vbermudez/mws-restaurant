@@ -5,14 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="black"/>
+  <meta name="Description" content="Restaurant reviews">
+
+  <link rel="preconnect" href="https://maps.googleapis.com">
+  <link rel="preconnect" href="https://normalize-css.googlecode.com">
+
+  <!-- <link rel="preload" href="https://normalize-css.googlecode.com/svn/trunk/normalize.css" as="style"> -->
+  <link rel="preload" href="/css/styles.css" as="style">
+
+  <link rel="preload" href="/js/register_sw.js" as="script">
+  <link rel="preload" href="/js/utils.js" as="script">
+  <link rel="preload" href="/js/imghelper.js" as="script">
+  <link rel="preload" href="/js/idbhelper.js" as="script">
+  <link rel="preload" href="/js/dbhelper.js" as="script">
+  <link rel="preload" href="/js/maphelper.js" as="script">
+  <link rel="preload" href="/js/main.js" as="script">
 
   <link rel="stylesheet" src="https://normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="/css/styles.css">
-  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
-
+  
   <link rel="manifest" href="/manifest.json">
-
-  <link rel="preconnect" href="https://maps.googleapis.com">
 
   <title>Restaurant Reviews</title>
 </head>
@@ -53,16 +65,11 @@
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-  <script>
-    function initMap() {}
-  </script>
   <script defer type="application/javascript" charset="utf-8" src="/js/register_sw.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/utils.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/imghelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/idbhelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/dbhelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/maphelper.js"></script>
-  <script async defer type="application/javascript" charset="utf-8" src="/js/main.js"></script>
+  <script>
+    window.initMap = () => {};
+  </script>
+  <script defer src="/js/main.js" type="module"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
 </body>
 
