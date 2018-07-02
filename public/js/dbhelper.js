@@ -1,17 +1,12 @@
 'use strict';
 
-import { Utils } from './utils.js'; 
-import { IDBHelper } from './idbhelper.js'; 
-
-Utils.configureAsyncExtensions();
-
 /**
  * Common database helper functions.
  */
 let _DBHelper_IDB_ = null;
 let _min_review_id = 1000;
 
-export class DBHelper {
+class DBHelper {
   static idb() {
     if (_DBHelper_IDB_ == null) _DBHelper_IDB_ = new IDBHelper(window);
 

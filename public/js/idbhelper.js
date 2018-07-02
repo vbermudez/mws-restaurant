@@ -1,10 +1,6 @@
 'use strict';
 
-import { Utils } from './utils.js'; 
-
-Utils.configureAsyncExtensions();
-
-export class IDBHelper {
+class IDBHelper {
     constructor(parent = window || self) {
         this.indexedDB = parent.indexedDB || parent.mozIndexedDB || parent.webkitIndexedDB || parent.msIndexedDB;
         this.dbName = 'restaurantsDB';

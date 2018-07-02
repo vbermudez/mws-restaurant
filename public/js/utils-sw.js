@@ -1,11 +1,4 @@
-'use strict';
-
-let _onlineState = true;
-
 class Utils {
-    static get online() { return _onlineState; }
-    static set online(value) { _onlineState = value; }
-
     static async forEach(callback) {
         if (this == null || typeof this === 'undefined') return;
         if (!callback || typeof callback !== 'function') return;
@@ -41,9 +34,7 @@ class Utils {
     }
 
     static configureAsyncExtensions() {
-        const parent = typeof window === 'undefined' ? self : window;
-
-        parent.addEventListener('unhandledrejection', function(event) {
+        self.addEventListener('unhandledrejection', function(event) {
             console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ').');
         });
 
@@ -63,37 +54,6 @@ class Utils {
             });
         }
     }
-
-    static configureEvents() {
-        if (typeof window !== 'undefined') {
-            window.addEventListener('online', Utils.handleOnlineStateChange);
-            window.addEventListener('offline', Utils.handleOnlineStateChange);
-        }
-    }
-
-    static favoriteOnClick(e) {
-        e.preventDefault();
-
-        const fav = e.target;
-        const isFav = fav.classList.contains('is-fav');
-
-        if (isFav) {
-            fav.innerHTML = '☆';
-            fav.classList.remove('is-fav');
-        } else {
-            fav.innerHTML = '★';
-            fav.classList.add('is-fav');
-        }
-
-        if (typeof window !== 'undefined') {
-            const restaurant = JSON.parse(fav.dataset.restaurant);
-            const evt = new CustomEvent('favorite', { detail: { restaurant: restaurant, favorite: !isFav } });
-
-            window.dispatchEvent(evt);
-        }
-    }
-
-    static handleOnlineStateChange(e) {
-        Utils.online = navigator.onLine;
-    }
 }
+
+Utils.configureAsyncExtensions();

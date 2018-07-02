@@ -1,13 +1,5 @@
 'use strict';
 
-import { Utils } from './utils.js';
-import { DBHelper } from './dbhelper.js';
-import { IMGHelper } from './imghelper.js';
-import { MapHelper } from './maphelper.js';
-
-Utils.configureAsyncExtensions();
-Utils.configureEvents();
-
 class RestaurantInfo {
   constructor() {
     this.restaurant = null;
@@ -55,7 +47,7 @@ class RestaurantInfo {
 
     const image = document.querySelector('#restaurant-img');
     image.setAttribute('role', 'presentation');
-    image.setAttribute('alt', '');
+    image.setAttribute('alt', this.restaurant.name);
 
     const sources = await IMGHelper.getResponsiveImgSources(this.restaurant);
 

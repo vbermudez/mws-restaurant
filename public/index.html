@@ -21,7 +21,7 @@
   <link rel="preload" href="/js/maphelper.js" as="script">
   <link rel="preload" href="/js/main.js" as="script">
 
-  <link rel="stylesheet" src="https://normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <!-- <link rel="stylesheet" href="https://normalize-css.googlecode.com/svn/trunk/normalize.css" /> -->
   <link rel="stylesheet" href="/css/styles.css">
   
   <link rel="manifest" href="/manifest.json">
@@ -66,11 +66,16 @@
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
-  <script defer type="application/javascript" charset="utf-8" src="/js/register_sw.js"></script>
   <script>
     window.initMap = () => {};
   </script>
-  <script defer src="/js/main.js" type="module"></script>
+  <script defer src="/js/register_sw.js" type="application/javascript" charset="utf-8" ></script>
+  <script async defer src="/js/utils.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/imghelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/idbhelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/dbhelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/maphelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/main.js" type="application/javascript" charset="utf-8"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
 </body>
 

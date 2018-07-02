@@ -2,7 +2,7 @@
 
 let _onlineState = true;
 
-export class Utils {
+class Utils {
     static get online() { return _onlineState; }
     static set online(value) { _onlineState = value; }
 
@@ -97,3 +97,6 @@ export class Utils {
         Utils.online = navigator.onLine;
     }
 }
+
+Utils.configureAsyncExtensions();
+Utils.configureEvents();

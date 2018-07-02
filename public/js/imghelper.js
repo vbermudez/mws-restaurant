@@ -1,7 +1,9 @@
+'use strict';
+
 /**
  * Common img helper functions.
  */
-export class IMGHelper {
+class IMGHelper {
     static imageUrlForRestaurant(restaurant) {
         return `/img/${restaurant.id}.webp`;
     }

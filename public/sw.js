@@ -1,11 +1,8 @@
-'use strict';
+self.importScripts('/js/utils-sw.js');
+self.importScripts('/js/idbhelper.js');
 
-self.importScripts('/js/utils-nomodule.js');
-self.importScripts('/js/idbhelper-nomodule.js');
-
-Utils.configureAsyncExtensions();
-
-const cacheName = 'restaurants';
+const cacheVersion = 4;
+const cacheName = `restaurants-v${cacheVersion}`;
 const filesToCache = [
     '/',
     '/manifest.json',
@@ -15,7 +12,8 @@ const filesToCache = [
     '/js/main.js',
     '/js/restaurant_info.js',
     '/restaurant.html',
-    'http://localhost:1337/restaurants'
+    'http://localhost:1337/restaurants',
+    'http://localhost:1337/reviews'
 ];
 const apiServerUrl = () => {
     const port = 1337; // Change this to your server port
@@ -48,6 +46,24 @@ self.addEventListener('install', e => {
     );
 });
 
+self.addEventListener('activate', e => {
+    console.log('[ServiceWorker] Activate');
+
+    e.waitUntil(
+       async () => {
+            const names = await caches.keys();
+
+            for (let name of names) {
+                if (name != cacheName) {
+                    console.log(`[ServiceWorker] Deleting cache ${name}`);
+                    caches.delete(name);
+                }
+            }
+
+            return true;
+        }
+    )
+});
 
 const sendPendingRestaurants = async () => {
     if (db == null) db = new IDBHelper(self);
@@ -106,6 +122,8 @@ const fetchReviews = async () => {
 
 self.addEventListener('sync', event => {
     if (event.tag === 'restaurants-reviews-sync') {
+        console.log('[ServiceWorker] Sync!');
+
         if (db == null) db = new IDBHelper(self);
         
         event.waitUntil(async () => {

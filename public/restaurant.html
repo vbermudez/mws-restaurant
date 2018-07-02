@@ -22,7 +22,7 @@
   <link rel="preload" href="/js/restaurant_info.js" as="script">
 
   <!-- Normalize.css for better cross-browser consistency -->
-  <link rel="stylesheet" src="https://normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <!-- <link rel="stylesheet" href="https://normalize-css.googlecode.com/svn/trunk/normalize.css" /> -->
   <!-- Main CSS file -->
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
 
@@ -110,10 +110,18 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <script defer type="application/javascript" charset="utf-8" src="/js/register_sw.js"></script>
   <script>
     window.initMap = () => {};
   </script>
+  <script>
+    window.initMap = () => {};
+  </script>
+  <script defer src="/js/register_sw.js" type="application/javascript" charset="utf-8" ></script>
+  <script async defer src="/js/utils.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/imghelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/idbhelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/dbhelper.js" type="application/javascript" charset="utf-8"></script>
+  <script async defer src="/js/maphelper.js" type="application/javascript" charset="utf-8"></script>
   <script defer src="/js/restaurant_info.js" type="module"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACHhugW2lOGB0RVkEH4JUxGCE1bU0dbMA&libraries=places&callback=initMap"></script>
   <!-- End scripts -->

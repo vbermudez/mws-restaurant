@@ -1,13 +1,5 @@
 'use strict';
 
-import { Utils } from './utils.js';
-import { DBHelper } from './dbhelper.js';
-import { IMGHelper } from './imghelper.js';
-import { MapHelper } from './maphelper.js';
-
-Utils.configureAsyncExtensions();
-Utils.configureEvents();
-
 class App {
   constructor() {
     this.restaurants = [];
@@ -172,6 +164,14 @@ class App {
     this.mapHelper.initMap(loc, zoom);
     this.updateRestaurants();
   }
+
+  initApp() {
+    this.fetchNeighborhoods();
+    this.fetchCuisines();
+
+    document.querySelector('#neighborhoods-select').addEventListener('change', this.updateRestaurants.bind(this), false);
+    document.querySelector('#cuisines-select').addEventListener('change', this.updateRestaurants.bind(this), false);
+  }
 }
 
 const app = new App();
@@ -179,16 +179,9 @@ const app = new App();
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-// window.addEventListener('load', event => {
-document.addEventListener('DOMContentLoaded', event => {
-// window.onload = _ => {
-  app.fetchNeighborhoods();
-  app.fetchCuisines();
-
-  document.querySelector('#neighborhoods-select').addEventListener('change', app.updateRestaurants, false);
-  document.querySelector('#cuisines-select').addEventListener('change', app.updateRestaurants, false);
-// }; 
-});
+window.addEventListener('load', app.initApp.bind(app) );
+// document.addEventListener('DOMContentLoaded', app.initApp.bind(app) );
+// window.onload = app.initApp.bind(app);
 
 /**
  * Initialize Google map, called from HTML.
